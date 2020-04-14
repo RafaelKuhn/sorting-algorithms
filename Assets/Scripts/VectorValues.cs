@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,23 +8,26 @@ public class VectorValues : MonoBehaviour
 {
     #region Variables
 
-    private int amount = 5;
-
+    [Header ("Table Prefabs")]
     public GameObject value;
-    public List<GameObject> values;
-    public Transform valuesParent;
-    private Vector2 valueAnchor;
-
     public GameObject number;
-    public List<GameObject> numbers;
+
+    [Header("Sort Table")]
+    public GameObject sortTable;
+    
+    [Header("Table Parent Anchors")]
+    public Transform valuesParent;
     public Transform numbersParent;
-    private Vector2 numberAnchor;
 
-    public GameObject marker;
+    [Header("Slider")]
+    public Slider arraySlider;
+    public TextMeshProUGUI sliderValue;
 
-    public GameObject button;
+    [NonSerialized] public List<GameObject> tables;
+    [NonSerialized] public List<GameObject> values;
+    [NonSerialized] public List<GameObject> numbers;
 
-    public int[] arr = { 12, 17, 29, 4, 7 };
+    [NonSerialized] public int[] rootArray;
 
     #endregion
 
@@ -32,58 +35,94 @@ public class VectorValues : MonoBehaviour
 
     void Awake()
     {
-        CreateLists();
-        GetAnchors();
+        tables = new List<GameObject>();
     }
 
-    void Start()
+    #endregion
+
+    #region Public Methods
+
+    public void GetSliderValues()
     {
-        StartCoroutine(DelayAndAssign());
+        sliderValue.text = arraySlider.value.ToString();
     }
+
+    public void InstantiateAllSorts()
+    {
+        
+        int arraySize = Convert.ToInt32(arraySlider.value);
+        rootArray = new int[arraySize];
+        FillArray(rootArray);
+        CreateLists();
+        AssignValues();
+        
+        InstantiateTables();
+    }
+
+    public void DestroyLists()
+    {
+        foreach (GameObject obj in tables)
+        {
+            GameObject.Destroy(obj);
+        }
+        tables.Clear();
+        foreach (GameObject obj in values)
+        {
+            GameObject.Destroy(obj);
+        }
+        values.Clear();
+        foreach (GameObject obj in numbers)
+        {
+            GameObject.Destroy(obj);
+        }
+        numbers.Clear();
+    }
+
     #endregion
 
     #region Private Methods
+
+    private void FillArray(int[] arr)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            arr[i] = UnityEngine.Random.Range(1, 99);
+        }
+
+    }
+
+    private void InstantiateTables()
+    {
+        for (int i = 0; i<6; i++)
+        {
+            tables.Add(Instantiate(sortTable, sortTable.transform.parent, false));
+            tables[i].SetActive(true);
+        }
+        
+        
+    }
 
     private void CreateLists()
     {
         values = new List<GameObject>();
         numbers = new List<GameObject>();
-        values.Add(value);
-        numbers.Add(number);
     }
 
-    private void GetAnchors()
+    private void AssignValues()
     {
-        valueAnchor = value.GetComponent<RectTransform>().anchoredPosition;
-        numberAnchor = number.GetComponent<RectTransform>().anchoredPosition;
-    }
-
-    #endregion
-
-    #region Coroutines and Protected Methods
-
-    private IEnumerator DelayAndAssign()
-    {
-
-        value.GetComponent<Slider>().value = arr[0];
-        number.GetComponent<TextMeshProUGUI>().text = arr[0].ToString();
-
-        for (int i = 1; i < amount; i++)
+        for (int i = 0; i < rootArray.Length; i++)
         {
-            yield return new WaitForSeconds(0f);
-
+            
             values.Add(Instantiate(value, valuesParent, false));
-            valueAnchor.x = (valueAnchor.x + 50);
-            values[i].GetComponent<RectTransform>().anchoredPosition = valueAnchor;
-            values[i].GetComponent<Slider>().value = arr[i];
+            values[i].GetComponent<Slider>().value = rootArray[i];
 
             numbers.Add(Instantiate(number, numbersParent, false));
-            numberAnchor.x = (numberAnchor.x + 50);
-            numbers[i].GetComponent<RectTransform>().anchoredPosition = numberAnchor;
-            numbers[i].GetComponent<TextMeshProUGUI>().text = arr[i].ToString();
+            numbers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = rootArray[i].ToString();
         }
+
     }
 
     #endregion
+
 
 }
