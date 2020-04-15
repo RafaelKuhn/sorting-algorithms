@@ -54,7 +54,7 @@ public class VectorValues : MonoBehaviour
         ranking = new List<TextMeshProUGUI>();
 
         winner = new Color32((byte)7, (byte)247, (byte)119, (byte)255);
-        loser = new Color32((byte)247, (byte)119, (byte)7, (byte)255);
+        loser = new Color32((byte)255, (byte)0, (byte)0, (byte)255);
     }
 
     #endregion

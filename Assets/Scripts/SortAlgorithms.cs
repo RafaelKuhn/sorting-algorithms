@@ -13,7 +13,7 @@ public class SortAlgorithms : MonoBehaviour
         SetCoroutineDelayTime(vectorValues.rootArray.Length);
 
         StartCoroutine(BubbleSort());
-        //StartCoroutine(SelectionSort());
+        StartCoroutine(SelectionSort());
         StartCoroutine(ShellSort());
         //StartCoroutine(HeapSort());
         //StartCoroutine(MergeSort());
@@ -53,7 +53,7 @@ public class SortAlgorithms : MonoBehaviour
                 UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
                 UpdateTables(values.GetChild(i + 1), numbers.GetChild(i+1), sortThis[i+1]);
 
-                yield return new WaitForSeconds(executionTime/2f); // after update
+                yield return new WaitForSeconds(executionTime / 2f); // after update
 
                 Highlight(values.GetChild(i), false);
                 Highlight(values.GetChild(i + 1), false);
@@ -62,6 +62,63 @@ public class SortAlgorithms : MonoBehaviour
 
         EndSort(vectorValues.bubble);
 
+    }
+
+    IEnumerator SelectionSort()
+    {
+        int trocas = 0;
+
+        var sortThis = vectorValues.GetArrayInstance();
+
+        Transform values = vectorValues.tables[1].transform.Find("Values").transform;
+        Transform numbers = vectorValues.tables[1].transform.Find("Numbers").transform;
+
+        int temp, smallest = 0;
+        int n = sortThis.Length;
+
+        int aux1, aux2 = 0;
+        
+        for (int i = 0; i < n - 1; i++)
+        {
+            smallest = i;
+            for (int j = i + 1; j < n; j++)
+            {
+                aux1 = smallest;
+                aux2 = j;
+
+                Highlight(values.GetChild(aux1), true);
+                Highlight(values.GetChild(aux2), true);
+
+                yield return new WaitForSeconds(executionTime); // after highlight
+
+                if (sortThis[j] < sortThis[smallest])
+                {
+                    smallest = j;
+
+                    trocas = trocas + 1;
+                    vectorValues.selection.text = trocas.ToString();
+                }
+
+                
+
+                Highlight(values.GetChild(aux1), false);
+                Highlight(values.GetChild(aux2), false);
+
+            }
+
+            temp = sortThis[smallest];
+            sortThis[smallest] = sortThis[i];
+            sortThis[i] = temp;
+
+            UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
+            UpdateTables(values.GetChild(smallest), numbers.GetChild(smallest), sortThis[smallest]);
+
+            yield return new WaitForSeconds(executionTime/2); // after update
+
+
+        }
+
+        EndSort(vectorValues.selection);
     }
 
     IEnumerator ShellSort()
@@ -103,8 +160,8 @@ public class SortAlgorithms : MonoBehaviour
                     sortThis[j] = sortThis[j - gap];
 
 
-                    aux = j; //
-                    //lastupdate;
+                    aux = j; 
+                    
 
                     UpdateTables(values.GetChild(aux), numbers.GetChild(aux), sortThis[aux]);
                     UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
@@ -123,7 +180,7 @@ public class SortAlgorithms : MonoBehaviour
                 UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
 
 
-                yield return new WaitForSeconds(executionTime/2); //after update
+                yield return new WaitForSeconds(executionTime / 2f); //after update
 
                 Highlight(values.GetChild(aux), false);
                 Highlight(values.GetChild(j), false);
