@@ -180,16 +180,34 @@ public class VectorValues : MonoBehaviour
 
     private void CleanColorRanking()
     {
-        foreach (TextMeshProUGUI rank in ranking)
-        {
-            rank.text = "";
-            rank.color = Color.white;
-        }
+        CleanSwapValues();
 
         ranking.Clear();
     }
 
-    
+    private void CleanSwapValues()
+    {
+        bubble.text = "";
+        bubble.color = Color.white;
+
+        selection.text = "";
+        selection.color = Color.white;
+
+        shell.text = "";
+        shell.color = Color.white;
+
+        quick.text = "";
+        quick.color = Color.white;
+
+        heap.text = "";
+        heap.color = Color.white;
+
+        merge.text = "";
+        merge.color = Color.white;
+
+    }
+
+
 
     #endregion
 
