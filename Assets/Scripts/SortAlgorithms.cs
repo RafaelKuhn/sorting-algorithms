@@ -8,6 +8,9 @@ public class SortAlgorithms : MonoBehaviour
     private float executionTime;
 
     [SerializeField] private VectorValues vectorValues;
+    [SerializeField] private GameObject reSort;
+    [SerializeField] private GameObject statusText;
+
     public void Sort()
     {
         SetCoroutineDelayTime(vectorValues.rootArray.Length);
@@ -160,7 +163,7 @@ public class SortAlgorithms : MonoBehaviour
                     sortThis[j] = sortThis[j - gap];
 
 
-                    aux = j; 
+                    aux = j; //
                     
 
                     UpdateTables(values.GetChild(aux), numbers.GetChild(aux), sortThis[aux]);
@@ -180,7 +183,7 @@ public class SortAlgorithms : MonoBehaviour
                 UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
 
 
-                yield return new WaitForSeconds(executionTime / 2f); //after update
+                yield return new WaitForSeconds(executionTime / 2f); // after update
 
                 Highlight(values.GetChild(aux), false);
                 Highlight(values.GetChild(j), false);
@@ -192,13 +195,7 @@ public class SortAlgorithms : MonoBehaviour
 
     }
 
-
-
-
-
-
-
-
+    
 
 
     #region Private Methods
@@ -207,8 +204,17 @@ public class SortAlgorithms : MonoBehaviour
     {
         vectorValues.ranking.Add(sort);
         vectorValues.UpdateColors(vectorValues.ranking.Count - 1);
+
+        if (vectorValues.ranking.Count == 6)
+            ResetSortButton();
     }
 
+    private void ResetSortButton()
+    {
+        statusText.gameObject.SetActive(false);
+        reSort.gameObject.SetActive(true);
+
+    }
     private void UpdateTables(Transform value, Transform number, int i)
     {
         value.GetComponent<Slider>().value = i;
