@@ -48,7 +48,6 @@ public class VectorValues : MonoBehaviour
     {
         tables = new List<GameObject>();
         ranking = new List<TextMeshProUGUI>();
-
     }
 
     #endregion

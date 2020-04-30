@@ -11,6 +11,8 @@ public class SortAlgorithms : MonoBehaviour
     [SerializeField] private GameObject resetButton;
     [SerializeField] private GameObject statusText;
 
+    private int returnedQuickSortPivot;
+
 
     
     public void Sort()
@@ -20,7 +22,7 @@ public class SortAlgorithms : MonoBehaviour
         StartCoroutine(BubbleSort());
         StartCoroutine(SelectionSort());
         StartCoroutine(ShellSort());
-        //StartCoroutine(QuickSort());
+        StartCoroutine(QuickSort());
         StartCoroutine(HeapSort());
         //StartCoroutine(MergeSort());
     }
@@ -44,7 +46,7 @@ public class SortAlgorithms : MonoBehaviour
                 Highlight(values.GetChild(i), true);
                 Highlight(values.GetChild(i+1), true);
 
-                yield return new WaitForSeconds(executionTime); // after highlight
+                yield return new WaitForSeconds(executionTime / 2f); // after highlight
 
                 if (sortThis[i] > sortThis[i + 1])
                 {
@@ -53,14 +55,15 @@ public class SortAlgorithms : MonoBehaviour
                     temp = sortThis[i + 1];
                     sortThis[i + 1] = sortThis[i];
                     sortThis[i] = temp;
-                        
-                    trocas = trocas + 1;
+
+                    trocas++;
                     vectorValues.bubble.text = trocas.ToString();
                 }
+
                 UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
                 UpdateTables(values.GetChild(i + 1), numbers.GetChild(i+1), sortThis[i+1]);
 
-                yield return new WaitForSeconds(executionTime / 2f); // after update
+                yield return new WaitForSeconds(executionTime / 4f); // after update
 
                 Highlight(values.GetChild(i), false);
                 Highlight(values.GetChild(i + 1), false);
@@ -96,14 +99,13 @@ public class SortAlgorithms : MonoBehaviour
                 Highlight(values.GetChild(aux1), true);
                 Highlight(values.GetChild(aux2), true);
 
-                yield return new WaitForSeconds(executionTime); // after highlight
+                yield return new WaitForSeconds(executionTime / 2f); // after highlight
 
                 if (sortThis[j] < sortThis[smallest])
                 {
                     smallest = j;
 
-                    trocas = trocas + 1;
-                    vectorValues.selection.text = trocas.ToString();
+
                 }
 
                 
@@ -117,10 +119,15 @@ public class SortAlgorithms : MonoBehaviour
             sortThis[smallest] = sortThis[i];
             sortThis[i] = temp;
 
+            trocas++;
+            vectorValues.selection.text = trocas.ToString();
+
+
+
             UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
             UpdateTables(values.GetChild(smallest), numbers.GetChild(smallest), sortThis[smallest]);
 
-            yield return new WaitForSeconds(executionTime/2); // after update
+            yield return new WaitForSeconds(executionTime / 4f); // after update
 
 
         }
@@ -177,7 +184,7 @@ public class SortAlgorithms : MonoBehaviour
 
                     Highlight(values.GetChild(aux), false);
 
-                    trocas = trocas + 1;
+                    trocas++;
                     vectorValues.shell.text = trocas.ToString();
                 }
 
@@ -208,8 +215,95 @@ public class SortAlgorithms : MonoBehaviour
         Transform values = vectorValues.tables[3].transform.Find("Values").transform;
         Transform numbers = vectorValues.tables[3].transform.Find("Numbers").transform;
 
+        yield return StartCoroutine(DoQuickSort(sortThis, 0, sortThis.Length - 1));
 
-        yield return new WaitForEndOfFrame();
+
+        IEnumerator DoQuickSort(int[] array, int low, int high)
+        {
+            if (low < high)
+            {
+                yield return StartCoroutine(Partition(array, low, high));
+
+                int partitionIndex = returnedQuickSortPivot;
+
+                //3. Recursively continue sorting the array
+                yield return StartCoroutine(DoQuickSort(array, low, partitionIndex - 1));
+                yield return StartCoroutine(DoQuickSort(array, partitionIndex + 1, high));
+
+            }
+
+            
+        }
+
+        IEnumerator Partition(int[] array, int low, int high)
+        {
+            returnedQuickSortPivot = 0;
+            //1. Select a pivot point.
+            int pivot = array[high];
+
+            int lowIndex = (low - 1);
+
+            //2. Reorder the collection.
+            for (int j = low; j < high; j++)
+            {
+                if (array[j] <= pivot)
+                {
+                    lowIndex++;
+
+
+                    Highlight(values.GetChild(lowIndex), true);
+                    Highlight(values.GetChild(j), true);
+
+                    yield return new WaitForSeconds(executionTime); // after highlight
+
+                    int temp = array[lowIndex];
+                    array[lowIndex] = array[j];
+                    array[j] = temp;
+
+                    UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
+                    UpdateTables(values.GetChild(lowIndex), numbers.GetChild(lowIndex), sortThis[lowIndex]);
+
+                    yield return new WaitForSeconds(executionTime / 2f); // after update
+
+                    Highlight(values.GetChild(lowIndex), false);
+                    Highlight(values.GetChild(j), false);
+
+
+
+                    trocas++;
+                    vectorValues.quick.text = trocas.ToString();
+                }
+            }
+
+            Highlight(values.GetChild(lowIndex + 1), true);
+            Highlight(values.GetChild(high), true);
+
+            yield return new WaitForSeconds(executionTime); // after highlight
+
+
+
+            int temp1 = array[lowIndex + 1];
+            array[lowIndex + 1] = array[high];
+            array[high] = temp1;
+
+            trocas++;
+            vectorValues.quick.text = trocas.ToString();
+
+            UpdateTables(values.GetChild(lowIndex+1), numbers.GetChild(lowIndex + 1), sortThis[lowIndex + 1]);
+            UpdateTables(values.GetChild(high), numbers.GetChild(high), sortThis[high]);
+
+            yield return new WaitForSeconds(executionTime / 2f); // after update
+
+            Highlight(values.GetChild(lowIndex + 1), false);
+            Highlight(values.GetChild(high), false);
+
+
+
+            returnedQuickSortPivot = lowIndex + 1;
+        }
+
+
+        EndSort(vectorValues.quick);
     }
 
     IEnumerator HeapSort()
@@ -240,7 +334,7 @@ public class SortAlgorithms : MonoBehaviour
             sortThis[0] = sortThis[i];
             sortThis[i] = temp;
 
-            trocas = trocas + 1;
+            trocas++;
             vectorValues.heap.text = trocas.ToString();
 
             UpdateTables(values.GetChild(0), numbers.GetChild(0), sortThis[0]);
@@ -309,7 +403,7 @@ public class SortAlgorithms : MonoBehaviour
 
     IEnumerator MergeSort()
     {
-        int trocas = 0;
+        //int trocas = 0;
 
         var sortThis = vectorValues.GetArrayInstance();
 
@@ -331,7 +425,7 @@ public class SortAlgorithms : MonoBehaviour
         vectorValues.ranking.Add(sort);
         vectorValues.UpdateColors(vectorValues.ranking.Count - 1);
 
-        if (vectorValues.ranking.Count == 4)
+        if (vectorValues.ranking.Count == 5)
             ResetSortButton();
     }
 
@@ -359,14 +453,6 @@ public class SortAlgorithms : MonoBehaviour
     }
 
     #endregion
-
-
-
-
-
-
-
-
 
 
 
