@@ -169,30 +169,22 @@ public class SortAlgorithms : MonoBehaviour
 
         while (gap > 0)
         {
-
             for (int i = 0; i + gap < n; i++)
             {
-                 
-
                 int j = i + gap;
                 temp = sortThis[j];
-                
 
                 while (j - gap >= 0 && temp < sortThis[j - gap])
                 {
-
                     Highlight(values.GetChild(j), true);
                     Highlight(values.GetChild(j - gap), true);
 
                     yield return new WaitForSeconds(executionTime); // after highlight
 
-
                     sortThis[j] = sortThis[j - gap];
-
 
                     aux = j; //
                     
-
                     UpdateTables(values.GetChild(aux), numbers.GetChild(aux), sortThis[aux]);
                     UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
 
@@ -266,24 +258,27 @@ public class SortAlgorithms : MonoBehaviour
                 {
                     lowIndex++;
 
-
-                    Highlight(values.GetChild(lowIndex), true);
-                    Highlight(values.GetChild(j), true);
-
-                    yield return new WaitForSeconds(executionTime); // after highlight
+                    if (lowIndex != j)
+                    {
+                        Highlight(values.GetChild(lowIndex), true);
+                        Highlight(values.GetChild(j), true);
+                        yield return new WaitForSeconds(executionTime); // after highlight
+                    }
 
                     int temp = array[lowIndex];
                     array[lowIndex] = array[j];
                     array[j] = temp;
 
-                    UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
-                    UpdateTables(values.GetChild(lowIndex), numbers.GetChild(lowIndex), sortThis[lowIndex]);
+                    if (lowIndex != j)
+                    {
+                        UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
+                        UpdateTables(values.GetChild(lowIndex), numbers.GetChild(lowIndex), sortThis[lowIndex]);
 
-                    yield return new WaitForSeconds(executionTime / 2f); // after update
+                        yield return new WaitForSeconds(executionTime / 2f); // after update
 
-                    Highlight(values.GetChild(lowIndex), false);
-                    Highlight(values.GetChild(j), false);
-
+                        Highlight(values.GetChild(lowIndex), false);
+                        Highlight(values.GetChild(j), false);
+                    }
 
 
                     trocas++;
@@ -509,14 +504,6 @@ public class SortAlgorithms : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-
     #region Private Methods
 
     private void EndSort(TextMeshProUGUI sort)
@@ -548,7 +535,7 @@ public class SortAlgorithms : MonoBehaviour
 
     private void SetCoroutineDelayTime(int arraySize)
     {
-        executionTime = ((14.85f - 0.45f * arraySize) / 27f);
+        executionTime = ((8.85f - 0.25f * arraySize) / 27f);
     }
 
     #endregion

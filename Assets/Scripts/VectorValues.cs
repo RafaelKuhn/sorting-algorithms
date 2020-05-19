@@ -38,6 +38,8 @@ public class VectorValues : MonoBehaviour
 
     [NonSerialized] public int[] rootArray;
 
+    [NonSerialized] private byte arrayType = 0;
+
 
 
     #endregion
@@ -50,20 +52,32 @@ public class VectorValues : MonoBehaviour
         ranking = new List<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        int[] arr = new int[15];
+        GenerateFewValues(arr);
+
+    }
+
     #endregion
 
     #region Public Methods
 
-    public void GetSliderValues()
+    public void ChangeSliderValuePreview()
     {
         sliderValue.text = arraySlider.value.ToString();
     }
-    
+
+    public void SetArrayType(int index)
+    {
+        arrayType = (byte)index;
+    }
+
     public void InstantiateAll()
     {
         CleanColorRanking();
 
-        InstanceRootArray();
+        CreateNewRootArray();
 
         FillArray(rootArray);
 
@@ -134,17 +148,44 @@ public class VectorValues : MonoBehaviour
 
     #region Private Methods
 
-
-    private void InstanceRootArray()
+    private void CreateNewRootArray()
     {
         rootArray = new int[Convert.ToInt32(arraySlider.value)];
     }
     private void FillArray(int[] arr)
     {
-        for (int i = 0; i < arr.Length; i++)
+        switch (arrayType)
         {
-            arr[i] = UnityEngine.Random.Range(1, 99);
+            case 0: // all random
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                break;
+
+            case 1: // nearly sorted
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                PseudoShellSort(arr);
+                break;
+
+            case 2: // inversely sorted
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                QuickSort(arr);
+                InvertArray(arr);
+                break;
+
+            case 3: // few values
+                GenerateFewValues(arr);
+                break;
         }
+
+        
 
     }
 
@@ -206,6 +247,132 @@ public class VectorValues : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region Presorting
+
+    private void InvertArray(int[] arr)
+    {
+        int swap;
+
+        int x = arr.Length-1;
+
+        for (int i = 0; i<(arr.Length/2); i++)
+        {
+            swap = arr[i];
+            arr[i] = arr[x];
+            arr[x] = swap;
+            x--;
+        }
+    }
+
+    private int[] QuickSort(int[] vetor)
+    {
+        int inicio = 0;
+        int fim = vetor.Length - 1;
+
+        QuickSort(vetor, inicio, fim);
+
+        return vetor;
+    }
+
+    private void QuickSort(int[] vetor, int inicio, int fim)
+    {
+        if (inicio < fim)
+        {
+            int p = vetor[inicio];
+            int i = inicio + 1;
+            int f = fim;
+
+            while (i <= f)
+            {
+                if (vetor[i] <= p)
+                {
+                    i++;
+                }
+                else if (p < vetor[f])
+                {
+                    f--;
+                }
+                else
+                {
+                    int troca = vetor[i];
+                    vetor[i] = vetor[f];
+                    vetor[f] = troca;
+                    i++;
+                    f--;
+                }
+            }
+
+            vetor[inicio] = vetor[f];
+            vetor[f] = p;
+
+            QuickSort(vetor, inicio, f - 1);
+            QuickSort(vetor, f + 1, fim);
+        }
+    }
+
+    private void PseudoShellSort(int[] arr)
+    {
+        int n = arr.Length;
+        int gap = n / 2;
+        int temp;
+
+        int aux = 0; //
+
+        while (gap > 1)
+        {
+            for (int i = 0; i + gap < n; i++)
+            {
+                int j = i + gap;
+                temp = arr[j];
+
+                while (j - gap >= 0 && temp < arr[j - gap])
+                {
+                    arr[j] = arr[j - gap];
+
+                    aux = j;
+
+                    j = j - gap;
+                }
+
+                arr[j] = temp;
+
+            }
+            gap = gap / 2;
+        }
+    }
+
+    private void GenerateFewValues(int[] arr)
+    {
+        var values = new List<int>();
+
+        values.Add(UnityEngine.Random.Range(1, 99));
+        values.Add(UnityEngine.Random.Range(1, 99));
+
+        if (arr.Length> 7)
+            values.Add(UnityEngine.Random.Range(1, 99));
+        if (arr.Length > 13)
+            values.Add(UnityEngine.Random.Range(1, 99));
+        if (arr.Length > 20)
+            values.Add(UnityEngine.Random.Range(1, 99));
+
+        for (int i = 0; i<values.Count; i++)
+        {
+            arr[i] = values[i];
+        }
+
+        for (int i = values.Count; i < arr.Length; i++)
+        {
+            arr[i] = values[UnityEngine.Random.Range(0, values.Count)];
+        }
+
+        values.Clear();
+
+
+
+
+    }
 
 
     #endregion
