@@ -37,7 +37,7 @@ public class VectorValues : MonoBehaviour
     [NonSerialized] public List<TextMeshProUGUI> ranking;
 
     [NonSerialized] public int[] rootArray;
-        
+
 
 
     #endregion
@@ -108,9 +108,9 @@ public class VectorValues : MonoBehaviour
         return genericArray;
     }
 
-    public void UpdateColors(int index)
+    public void UpdateColors(TextMeshProUGUI swapText)
     {
-        ranking[index].color = Color.green;
+        swapText.color = Color.green;
     }
 
     public void ReassignTables()

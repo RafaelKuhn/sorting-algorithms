@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class SortAlgorithms : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class SortAlgorithms : MonoBehaviour
 
     private int returnedQuickSortPivot;
 
-
-    
     public void Sort()
     {
         SetCoroutineDelayTime(vectorValues.rootArray.Length);
@@ -24,7 +23,7 @@ public class SortAlgorithms : MonoBehaviour
         StartCoroutine(ShellSort());
         StartCoroutine(QuickSort());
         StartCoroutine(HeapSort());
-        //StartCoroutine(MergeSort());
+        StartCoroutine(MergeSort());
     }
 
 
@@ -43,14 +42,19 @@ public class SortAlgorithms : MonoBehaviour
             for (int i = 0; i < (sortThis.Length - j - 1); i++)
             {
                 
-                Highlight(values.GetChild(i), true);
-                Highlight(values.GetChild(i+1), true);
-
-                yield return new WaitForSeconds(executionTime / 2f); // after highlight
+                
 
                 if (sortThis[i] > sortThis[i + 1])
                 {
-                    
+
+                    Highlight(values.GetChild(i), true);
+                    Highlight(values.GetChild(i + 1), true);
+
+                    yield return new WaitForSeconds(executionTime / 2f); // after highlight
+
+
+
+
 
                     temp = sortThis[i + 1];
                     sortThis[i + 1] = sortThis[i];
@@ -58,15 +62,27 @@ public class SortAlgorithms : MonoBehaviour
 
                     trocas++;
                     vectorValues.bubble.text = trocas.ToString();
+
+
+
+
+                    UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
+                    UpdateTables(values.GetChild(i + 1), numbers.GetChild(i + 1), sortThis[i + 1]);
+
+                    yield return new WaitForSeconds(executionTime / 4f); // after update
+
+                    Highlight(values.GetChild(i), false);
+                    Highlight(values.GetChild(i + 1), false);
+
+
+
+
+
+
+
                 }
 
-                UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
-                UpdateTables(values.GetChild(i + 1), numbers.GetChild(i+1), sortThis[i+1]);
-
-                yield return new WaitForSeconds(executionTime / 4f); // after update
-
-                Highlight(values.GetChild(i), false);
-                Highlight(values.GetChild(i + 1), false);
+                
             }
         }
 
@@ -302,6 +318,7 @@ public class SortAlgorithms : MonoBehaviour
             returnedQuickSortPivot = lowIndex + 1;
         }
 
+        returnedQuickSortPivot = 0;
 
         EndSort(vectorValues.quick);
     }
@@ -311,11 +328,6 @@ public class SortAlgorithms : MonoBehaviour
         int trocas = 0;
 
         var sortThis = vectorValues.GetArrayInstance();
-
-        //string a = "";
-        //foreach (int ind in sortThis)
-        //    a = a + " " + ind;
-        //Debug.Log(a);
 
         Transform values = vectorValues.tables[4].transform.Find("Values").transform;
         Transform numbers = vectorValues.tables[4].transform.Find("Numbers").transform;
@@ -393,26 +405,113 @@ public class SortAlgorithms : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        //string s = "";
-        //foreach (int ind in sortThis)
-        //    s = s+" " + ind;
-        //Debug.Log(s);
 
         EndSort(vectorValues.heap);
     }
 
     IEnumerator MergeSort()
     {
-        //int trocas = 0;
+        int trocas = 0;
 
-        var sortThis = vectorValues.GetArrayInstance();
+        Transform values = vectorValues.tables[5].transform.Find("Values").transform;
+        Transform numbers = vectorValues.tables[5].transform.Find("Numbers").transform;
 
-        Transform values = vectorValues.tables[3].transform.Find("Values").transform;
-        Transform numbers = vectorValues.tables[3].transform.Find("Numbers").transform;
+        var sortThis = vectorValues.GetArrayInstance();       
 
 
-        yield return new WaitForEndOfFrame();
+        yield return mergeSort(sortThis, 0, sortThis.Length-1);
+
+        // l is for left index and r is right index of the sub-array of arr to be sorted 
+        IEnumerator mergeSort(int[] arr, int l, int r)
+        {
+            if (l < r)
+            {
+
+                // Same as (l + r) / 2, but avoids overflow 
+                // for large l and r 
+                int m = l + (r - l) / 2;
+
+                // Sort first and second halves 
+                yield return mergeSort(arr, l, m);
+                yield return mergeSort(arr, m + 1, r);
+
+                yield return StartCoroutine(merge(arr, l, m, r));
+            }
+
+            yield return null;
+        }
+
+
+        // Merges two subarrays of arr[].  First subarray is arr[l..m]  Second subarray is arr[m+1..r] 
+        IEnumerator merge(int[] arr, int start, int mid, int end)
+        {
+            int start2 = mid + 1;
+
+            // If the direct merge is already sorted 
+            if (arr[mid] <= arr[start2])
+            {
+                yield break;
+            }
+
+            // Two pointers to maintain start 
+            // of both arrays to merge 
+            while (start <= mid && start2 <= end)
+            {
+
+                // If element 1 is in right place 
+                if (arr[start] <= arr[start2])
+                {
+                    start++;
+                }
+                else
+                {
+                    int value = arr[start2];
+                    int index = start2;
+
+                    // Shift all the elements between element 1 
+                    // element 2, right by 1. 
+                    while (index != start)
+                    {
+                        Highlight(values.GetChild(index), true);
+                        Highlight(values.GetChild(index-1), true);
+                        arr[index] = arr[index - 1];
+
+                        
+                        yield return new WaitForSeconds(executionTime/2);
+                        UpdateTables(values.GetChild(index), numbers.GetChild(index), arr[index]);
+                        Highlight(values.GetChild(index), false);
+                        Highlight(values.GetChild(index - 1), false);
+
+                        trocas++;
+                        vectorValues.merge.text = trocas.ToString();
+
+                        index--;
+                    }
+                    arr[start] = value;
+
+                    Highlight(values.GetChild(start), true);
+                    UpdateTables(values.GetChild(start), numbers.GetChild(start), arr[start]);
+                    yield return new WaitForSeconds(executionTime/2);
+                    Highlight(values.GetChild(start), false);
+
+                    trocas++;
+                    vectorValues.merge.text = trocas.ToString();
+
+                    // Update all the pointers 
+                    start++;
+                    mid++;
+                    start2++;
+                }
+            }
+        }
+
+        EndSort(vectorValues.merge);
     }
+
+
+
+
+
 
 
 
@@ -423,9 +522,9 @@ public class SortAlgorithms : MonoBehaviour
     private void EndSort(TextMeshProUGUI sort)
     {
         vectorValues.ranking.Add(sort);
-        vectorValues.UpdateColors(vectorValues.ranking.Count - 1);
+        vectorValues.UpdateColors(sort);
 
-        if (vectorValues.ranking.Count == 5)
+        if (vectorValues.ranking.Count == 6)
             ResetSortButton();
     }
 
