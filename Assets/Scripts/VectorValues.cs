@@ -37,11 +37,7 @@ public class VectorValues : MonoBehaviour
     [NonSerialized] public List<TextMeshProUGUI> ranking;
 
     [NonSerialized] public int[] rootArray;
-    private Color32 winner, loser;
 
-    private float lerpAmount = 0;
-
-    
 
 
     #endregion
@@ -52,9 +48,6 @@ public class VectorValues : MonoBehaviour
     {
         tables = new List<GameObject>();
         ranking = new List<TextMeshProUGUI>();
-
-        winner = new Color32((byte)7, (byte)247, (byte)119, (byte)255);
-        loser = new Color32((byte)247, (byte)119, (byte)7, (byte)255);
     }
 
     #endregion
@@ -65,7 +58,7 @@ public class VectorValues : MonoBehaviour
     {
         sliderValue.text = arraySlider.value.ToString();
     }
-
+    
     public void InstantiateAll()
     {
         CleanColorRanking();
@@ -76,7 +69,7 @@ public class VectorValues : MonoBehaviour
 
         InstantiateLists();
 
-        AssignValues();
+        InstantiateValues();
 
         InstantiateTables();
 
@@ -115,18 +108,32 @@ public class VectorValues : MonoBehaviour
         return genericArray;
     }
 
-    public void UpdateColors(int index)
+    public void UpdateColors(TextMeshProUGUI swapText)
     {
-        
-        ranking[index].color = Color32.Lerp(winner, loser, lerpAmount);
-        lerpAmount = lerpAmount + (1f/6f);
+        swapText.color = Color.green;
     }
 
+    public void ReassignTables()
+    {
+        for (int table = 0; table < tables.Count; table++)
+        {
+            Transform values = tables[table].transform.Find("Values").transform;
+            Transform numbers = tables[table].transform.Find("Numbers").transform;
+            for (int i = 0; i < rootArray.Length; i++)
+            {
 
+                values.GetChild(i).GetComponent<Slider>().value = rootArray[i];
+                numbers.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = rootArray[i].ToString();
+            }
+        }
+
+        CleanColorRanking();
+    }
 
     #endregion
 
     #region Private Methods
+
 
     private void InstanceRootArray()
     {
@@ -156,7 +163,7 @@ public class VectorValues : MonoBehaviour
         numbers = new List<GameObject>();
     }
 
-    private void AssignValues()
+    private void InstantiateValues()
     {
         for (int i = 0; i < rootArray.Length; i++)
         {
@@ -172,15 +179,34 @@ public class VectorValues : MonoBehaviour
 
     private void CleanColorRanking()
     {
-        foreach (TextMeshProUGUI rank in ranking)
-        {
-            rank.text = "";
-            rank.color = Color.white;
-            lerpAmount = 0;
-        }
+        CleanSwapValues();
 
         ranking.Clear();
     }
+
+    private void CleanSwapValues()
+    {
+        bubble.text = "";
+        bubble.color = Color.white;
+
+        selection.text = "";
+        selection.color = Color.white;
+
+        shell.text = "";
+        shell.color = Color.white;
+
+        quick.text = "";
+        quick.color = Color.white;
+
+        heap.text = "";
+        heap.color = Color.white;
+
+        merge.text = "";
+        merge.color = Color.white;
+
+    }
+
+
 
     #endregion
 
