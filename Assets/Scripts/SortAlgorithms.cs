@@ -247,7 +247,11 @@ public class SortAlgorithms : MonoBehaviour
         {
             returnedQuickSortPivot = 0;
             //1. Select a pivot point.
+            int highLightPivot = high;
+
             int pivot = array[high];
+
+            Highlight(values.GetChild(highLightPivot), true);
 
             int lowIndex = (low - 1);
 
@@ -308,9 +312,10 @@ public class SortAlgorithms : MonoBehaviour
             Highlight(values.GetChild(lowIndex + 1), false);
             Highlight(values.GetChild(high), false);
 
-
-
             returnedQuickSortPivot = lowIndex + 1;
+
+
+            Highlight(values.GetChild(highLightPivot), false);
         }
 
         returnedQuickSortPivot = 0;
@@ -536,6 +541,7 @@ public class SortAlgorithms : MonoBehaviour
     private void SetCoroutineDelayTime(int arraySize)
     {
         executionTime = ((8.85f - 0.25f * arraySize) / 27f);
+
     }
 
     #endregion
