@@ -14,10 +14,6 @@ public class VectorValues : MonoBehaviour
 
     [Header("Sort Table")]
     public GameObject sortTable;
-    
-    [Header("Table Parent Anchors")]
-    public Transform valuesParent;
-    public Transform numbersParent;
 
     [Header("Slider")]
     public Slider arraySlider;
@@ -202,10 +198,10 @@ public class VectorValues : MonoBehaviour
         for (int i = 0; i < rootArray.Length; i++)
         {
             
-            values.Add(Instantiate(value, valuesParent, false));
+            values.Add(Instantiate(value, sortTable.transform.GetChild(0), false)); // instantiate "value" in "values"
             values[i].GetComponent<Slider>().value = rootArray[i];
 
-            numbers.Add(Instantiate(number, numbersParent, false));
+            numbers.Add(Instantiate(number, sortTable.transform.GetChild(1), false)); // instantiate "number" in "numbers"
             numbers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = rootArray[i].ToString();
         }
 
@@ -220,23 +216,25 @@ public class VectorValues : MonoBehaviour
 
     private void CleanSwapValues()
     {
+        var whiteColor = Color.white;
+
         bubble.text = "";
-        bubble.color = Color.white;
+        bubble.color = whiteColor;
 
         selection.text = "";
-        selection.color = Color.white;
+        selection.color = whiteColor;
 
         shell.text = "";
-        shell.color = Color.white;
+        shell.color = whiteColor;
 
         quick.text = "";
-        quick.color = Color.white;
+        quick.color = whiteColor;
 
         heap.text = "";
-        heap.color = Color.white;
+        heap.color = whiteColor;
 
         merge.text = "";
-        merge.color = Color.white;
+        merge.color = whiteColor;
 
     }
 

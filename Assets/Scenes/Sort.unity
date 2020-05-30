@@ -946,7 +946,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 548, y: 20}
+  m_SizeDelta: {x: 550, y: 20}
   m_Pivot: {x: 0.5, y: 0.000000039115548}
 --- !u!114 &79924774
 MonoBehaviour:
@@ -961,11 +961,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: -1
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -2904,8 +2904,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 29.5
-  m_fontSizeBase: 29.5
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2921,7 +2921,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -5468,7 +5468,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
-  m_SizeDelta: {x: 548, y: -31.6}
+  m_SizeDelta: {x: 550, y: -31.6}
   m_Pivot: {x: 0.5, y: 0.99999964}
 --- !u!114 &957558153
 MonoBehaviour:
@@ -5483,11 +5483,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: -1
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -6721,8 +6721,6 @@ MonoBehaviour:
   value: {fileID: 3713574912557721666, guid: 04ba65e1821db124bb5c569c402db570, type: 3}
   number: {fileID: 4272969213885869990, guid: b2b34a8ebff775b4ca91a51101139b5c, type: 3}
   sortTable: {fileID: 1213863845}
-  valuesParent: {fileID: 957558152}
-  numbersParent: {fileID: 79924773}
   arraySlider: {fileID: 8953629114581117451}
   sliderValue: {fileID: 48831727}
   bubble: {fileID: 45088938}
@@ -6969,10 +6967,10 @@ RectTransform:
   m_Father: {fileID: 2130170787}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 7.5}
-  m_SizeDelta: {x: 567, y: -15}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 283.5, y: -527.5}
+  m_SizeDelta: {x: 567, y: 1055}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1229034243
 GameObject:
@@ -8926,9 +8924,9 @@ RectTransform:
   m_Father: {fileID: 1747482315}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -421}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 230}
   m_SizeDelta: {x: 720, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1723084298
