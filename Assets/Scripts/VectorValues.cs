@@ -52,13 +52,6 @@ public class VectorValues : MonoBehaviour
         ranking = new List<TextMeshProUGUI>();
     }
 
-    private void Start()
-    {
-        int[] arr = new int[15];
-        GenerateFewValues(arr);
-
-    }
-
     #endregion
 
     #region Public Methods
@@ -347,25 +340,25 @@ public class VectorValues : MonoBehaviour
     {
         var values = new List<int>();
 
-        values.Add(UnityEngine.Random.Range(1, 99));
-        values.Add(UnityEngine.Random.Range(1, 99));
+        values.Add(UnityEngine.Random.Range(1, 100));
 
-        if (arr.Length> 7)
-            values.Add(UnityEngine.Random.Range(1, 99));
-        if (arr.Length > 13)
-            values.Add(UnityEngine.Random.Range(1, 99));
+        if (arr.Length> 5)
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 10)
+            values.Add(UnityEngine.Random.Range(1, 100));
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 15)
+            values.Add(UnityEngine.Random.Range(1, 100));
         if (arr.Length > 20)
-            values.Add(UnityEngine.Random.Range(1, 99));
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 25)
+            values.Add(UnityEngine.Random.Range(1, 100));
 
         for (int i = 0; i<values.Count; i++)
         {
             arr[i] = values[i];
         }
 
-        for (int i = values.Count; i < arr.Length; i++)
-        {
-            arr[i] = values[UnityEngine.Random.Range(0, values.Count)];
-        }
 
         values.Clear();
 

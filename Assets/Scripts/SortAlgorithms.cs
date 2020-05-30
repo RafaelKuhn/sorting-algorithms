@@ -27,7 +27,7 @@ public class SortAlgorithms : MonoBehaviour
     }
 
 
-    IEnumerator BubbleSort()
+    private IEnumerator BubbleSort()
     {
         int trocas = 0;
 
@@ -90,7 +90,7 @@ public class SortAlgorithms : MonoBehaviour
 
     }
 
-    IEnumerator SelectionSort()
+    private IEnumerator SelectionSort()
     {
         int trocas = 0;
 
@@ -151,7 +151,7 @@ public class SortAlgorithms : MonoBehaviour
         EndSort(vectorValues.selection);
     }
 
-    IEnumerator ShellSort()
+    private IEnumerator ShellSort()
     {
         int trocas = 0;
 
@@ -214,7 +214,7 @@ public class SortAlgorithms : MonoBehaviour
 
     }
 
-    IEnumerator QuickSort()
+    private IEnumerator QuickSort()
     {
         int trocas = 0;
 
@@ -323,7 +323,7 @@ public class SortAlgorithms : MonoBehaviour
         EndSort(vectorValues.quick);
     }
 
-    IEnumerator HeapSort()
+    private IEnumerator HeapSort()
     {
         int trocas = 0;
 
@@ -409,7 +409,7 @@ public class SortAlgorithms : MonoBehaviour
         EndSort(vectorValues.heap);
     }
 
-    IEnumerator MergeSort()
+    private IEnumerator MergeSort()
     {
         int trocas = 0;
 
