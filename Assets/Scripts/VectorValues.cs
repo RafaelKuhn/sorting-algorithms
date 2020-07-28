@@ -14,10 +14,6 @@ public class VectorValues : MonoBehaviour
 
     [Header("Sort Table")]
     public GameObject sortTable;
-    
-    [Header("Table Parent Anchors")]
-    public Transform valuesParent;
-    public Transform numbersParent;
 
     [Header("Slider")]
     public Slider arraySlider;
@@ -38,6 +34,8 @@ public class VectorValues : MonoBehaviour
 
     [NonSerialized] public int[] rootArray;
 
+    [NonSerialized] private byte arrayType = 0;
+
 
 
     #endregion
@@ -54,16 +52,21 @@ public class VectorValues : MonoBehaviour
 
     #region Public Methods
 
-    public void GetSliderValues()
+    public void ChangeSliderValuePreview()
     {
         sliderValue.text = arraySlider.value.ToString();
     }
-    
+
+    public void SetArrayType(int index)
+    {
+        arrayType = (byte)index;
+    }
+
     public void InstantiateAll()
     {
         CleanColorRanking();
 
-        InstanceRootArray();
+        CreateNewRootArray();
 
         FillArray(rootArray);
 
@@ -134,17 +137,44 @@ public class VectorValues : MonoBehaviour
 
     #region Private Methods
 
-
-    private void InstanceRootArray()
+    private void CreateNewRootArray()
     {
         rootArray = new int[Convert.ToInt32(arraySlider.value)];
     }
     private void FillArray(int[] arr)
     {
-        for (int i = 0; i < arr.Length; i++)
+        switch (arrayType)
         {
-            arr[i] = UnityEngine.Random.Range(1, 99);
+            case 0: // all random
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                break;
+
+            case 1: // nearly sorted
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                PseudoShellSort(arr);
+                break;
+
+            case 2: // inversely sorted
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    arr[i] = UnityEngine.Random.Range(1, 99);
+                }
+                QuickSort(arr);
+                InvertArray(arr);
+                break;
+
+            case 3: // few values
+                GenerateFewValues(arr);
+                break;
         }
+
+        
 
     }
 
@@ -168,10 +198,10 @@ public class VectorValues : MonoBehaviour
         for (int i = 0; i < rootArray.Length; i++)
         {
             
-            values.Add(Instantiate(value, valuesParent, false));
+            values.Add(Instantiate(value, sortTable.transform.GetChild(0), false)); // instantiate "value" in "values"
             values[i].GetComponent<Slider>().value = rootArray[i];
 
-            numbers.Add(Instantiate(number, numbersParent, false));
+            numbers.Add(Instantiate(number, sortTable.transform.GetChild(1), false)); // instantiate "number" in "numbers"
             numbers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = rootArray[i].ToString();
         }
 
@@ -186,26 +216,154 @@ public class VectorValues : MonoBehaviour
 
     private void CleanSwapValues()
     {
+        var whiteColor = Color.white;
+
         bubble.text = "";
-        bubble.color = Color.white;
+        bubble.color = whiteColor;
 
         selection.text = "";
-        selection.color = Color.white;
+        selection.color = whiteColor;
 
         shell.text = "";
-        shell.color = Color.white;
+        shell.color = whiteColor;
 
         quick.text = "";
-        quick.color = Color.white;
+        quick.color = whiteColor;
 
         heap.text = "";
-        heap.color = Color.white;
+        heap.color = whiteColor;
 
         merge.text = "";
-        merge.color = Color.white;
+        merge.color = whiteColor;
 
     }
 
+    #endregion
+
+    #region Presorting
+
+    private void InvertArray(int[] arr)
+    {
+        int swap;
+
+        int x = arr.Length-1;
+
+        for (int i = 0; i<(arr.Length/2); i++)
+        {
+            swap = arr[i];
+            arr[i] = arr[x];
+            arr[x] = swap;
+            x--;
+        }
+    }
+
+    private int[] QuickSort(int[] vetor)
+    {
+        int inicio = 0;
+        int fim = vetor.Length - 1;
+
+        QuickSort(vetor, inicio, fim);
+
+        return vetor;
+    }
+
+    private void QuickSort(int[] vetor, int inicio, int fim)
+    {
+        if (inicio < fim)
+        {
+            int p = vetor[inicio];
+            int i = inicio + 1;
+            int f = fim;
+
+            while (i <= f)
+            {
+                if (vetor[i] <= p)
+                {
+                    i++;
+                }
+                else if (p < vetor[f])
+                {
+                    f--;
+                }
+                else
+                {
+                    int troca = vetor[i];
+                    vetor[i] = vetor[f];
+                    vetor[f] = troca;
+                    i++;
+                    f--;
+                }
+            }
+
+            vetor[inicio] = vetor[f];
+            vetor[f] = p;
+
+            QuickSort(vetor, inicio, f - 1);
+            QuickSort(vetor, f + 1, fim);
+        }
+    }
+
+    private void PseudoShellSort(int[] arr)
+    {
+        int n = arr.Length;
+        int gap = n / 2;
+        int temp;
+
+        int aux = 0; //
+
+        while (gap > 1)
+        {
+            for (int i = 0; i + gap < n; i++)
+            {
+                int j = i + gap;
+                temp = arr[j];
+
+                while (j - gap >= 0 && temp < arr[j - gap])
+                {
+                    arr[j] = arr[j - gap];
+
+                    aux = j;
+
+                    j = j - gap;
+                }
+
+                arr[j] = temp;
+
+            }
+            gap = gap / 2;
+        }
+    }
+
+    private void GenerateFewValues(int[] arr)
+    {
+        var values = new List<int>();
+
+        values.Add(UnityEngine.Random.Range(1, 100));
+
+        if (arr.Length> 5)
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 10)
+            values.Add(UnityEngine.Random.Range(1, 100));
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 15)
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 20)
+            values.Add(UnityEngine.Random.Range(1, 100));
+        if (arr.Length > 25)
+            values.Add(UnityEngine.Random.Range(1, 100));
+
+        for (int i = 0; i<values.Count; i++)
+        {
+            arr[i] = values[i];
+        }
+
+
+        values.Clear();
+
+
+
+
+    }
 
 
     #endregion
