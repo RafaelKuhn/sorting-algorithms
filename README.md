@@ -1,4 +1,4 @@
-# [EN] Sorting Algorithms
+# 🇬🇧 Sorting Algorithms
 This project contains a simple graphical representation of some of the most famous sorting algorithms.  
 Made in Unity C# using coroutines and sliders.
 
@@ -11,7 +11,7 @@ License
 MIT
 
 
-# [BR] Algoritmos de Ordenação
+# 🇧🇷 Algoritmos de Ordenação
 Este projeto contém uma simples representação gráfica da implementação alguns dos mais famosos algoritmos de ordenação.  
 Feito em Unity C# utilizando corrotinas e sliders.
 
