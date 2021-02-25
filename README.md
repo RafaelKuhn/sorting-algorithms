@@ -12,7 +12,7 @@ MIT
 
 
 <h1><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/1200px-Flag_of_Brazil.svg.png" width="5%"/>  Algoritmos de Ordenação</h1>
-Este projeto contém uma simples representação gráfica da implementação alguns dos mais famosos algoritmos de ordenação.  
+Este projeto contém uma simples representação gráfica da implementação de alguns dos mais famosos algoritmos de ordenação.  
 Feito em Unity C# utilizando corrotinas e sliders.
 
 Demonstração
