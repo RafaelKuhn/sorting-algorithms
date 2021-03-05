@@ -14,10 +14,13 @@ public class VectorValues : MonoBehaviour
 
     [Header("Sort Table")]
     public GameObject sortTable;
+    
+    [Header("Instance spaces")]
+    public Transform rightInstanceSpace;
+    public Transform leftInstanceSpace;
 
     [Header("Slider")]
     public Slider arraySlider;
-    public TextMeshProUGUI sliderValue;
 
     [Header("Trocas")]
     public TextMeshProUGUI bubble;
@@ -27,14 +30,14 @@ public class VectorValues : MonoBehaviour
     public TextMeshProUGUI heap;
     public TextMeshProUGUI merge;
 
-    [NonSerialized] public List<GameObject> tables;
-    [NonSerialized] public List<GameObject> values;
-    [NonSerialized] public List<GameObject> numbers;
-    [NonSerialized] public List<TextMeshProUGUI> ranking;
+    [HideInInspector] public List<GameObject> tables;
+    [HideInInspector] public List<GameObject> values;
+    [HideInInspector] public List<GameObject> numbers;
+    [HideInInspector] public List<TextMeshProUGUI> ranking;
 
-    [NonSerialized] public int[] rootArray;
+    [HideInInspector] public int[] rootArray;
 
-    [NonSerialized] private byte arrayType = 0;
+    [HideInInspector] private byte arrayType = 0;
 
 
 
@@ -51,11 +54,6 @@ public class VectorValues : MonoBehaviour
     #endregion
 
     #region Public Methods
-
-    public void ChangeSliderValuePreview()
-    {
-        sliderValue.text = arraySlider.value.ToString();
-    }
 
     public void SetArrayType(int index)
     {
@@ -180,10 +178,20 @@ public class VectorValues : MonoBehaviour
 
     private void InstantiateTables()
     {
-        for (int i = 0; i<6; i++)
+        // dumb code lul
+        for (int i = 0; i<3; i++)
         {
-            tables.Add(Instantiate(sortTable, sortTable.transform.parent, false));
-            tables[i].SetActive(true);
+            GameObject obj = Instantiate( sortTable, leftInstanceSpace, false );
+            tables.Add( obj );
+            obj.name = $"left {i}";
+            tables[i].SetActive( true );
+        }
+        for (int i = 3; i < 6; i++)
+        {
+            GameObject obj = Instantiate( sortTable, rightInstanceSpace, false );
+            tables.Add( obj );
+            obj.name = $"right {i}";
+            tables[i].SetActive( true );
         }
     }
 
@@ -197,11 +205,10 @@ public class VectorValues : MonoBehaviour
     {
         for (int i = 0; i < rootArray.Length; i++)
         {
-            
-            values.Add(Instantiate(value, sortTable.transform.GetChild(0), false)); // instantiate "value" in "values"
+            values.Add(Instantiate(value, sortTable.transform.GetChild(0))); // instantiate "value" prefab in "values" array
             values[i].GetComponent<Slider>().value = rootArray[i];
 
-            numbers.Add(Instantiate(number, sortTable.transform.GetChild(1), false)); // instantiate "number" in "numbers"
+            numbers.Add(Instantiate(number, sortTable.transform.GetChild(1))); // instantiate "number" prefab in "numbers" array
             numbers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = rootArray[i].ToString();
         }
 
@@ -209,12 +216,12 @@ public class VectorValues : MonoBehaviour
 
     private void CleanColorRanking()
     {
-        CleanSwapValues();
+        ResetSwapUI();
 
         ranking.Clear();
     }
 
-    private void CleanSwapValues()
+    private void ResetSwapUI()
     {
         var whiteColor = Color.white;
 

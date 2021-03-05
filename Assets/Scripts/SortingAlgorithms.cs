@@ -2,21 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
-public class SortAlgorithms : MonoBehaviour
+public class SortingAlgorithms : MonoBehaviour
 {
     private float executionTime;
+    private float ExecutionTime
+    {
+        get => executionTime;
+        set => executionTime = (8.85f - 0.25f * value) / 27f;
+    }
 
     [SerializeField] private VectorValues vectorValues;
     [SerializeField] private GameObject resetButton;
     [SerializeField] private GameObject statusText;
 
-    private int returnedQuickSortPivot;
-
-    public void Sort()
+    public void _SortButtonClick()
     {
-        SetCoroutineDelayTime(vectorValues.rootArray.Length);
+        ExecutionTime = vectorValues.rootArray.Length;
 
         StartCoroutine(BubbleSort());
         StartCoroutine(SelectionSort());
@@ -50,7 +52,7 @@ public class SortAlgorithms : MonoBehaviour
                     Highlight(values.GetChild(i), true);
                     Highlight(values.GetChild(i + 1), true);
 
-                    yield return new WaitForSeconds(executionTime / 2f); // after highlight
+                    yield return new WaitForSeconds(ExecutionTime / 2f); // after highlight
 
 
 
@@ -69,20 +71,11 @@ public class SortAlgorithms : MonoBehaviour
                     UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
                     UpdateTables(values.GetChild(i + 1), numbers.GetChild(i + 1), sortThis[i + 1]);
 
-                    yield return new WaitForSeconds(executionTime / 4f); // after update
+                    yield return new WaitForSeconds(ExecutionTime / 4f); // after update
 
                     Highlight(values.GetChild(i), false);
                     Highlight(values.GetChild(i + 1), false);
-
-
-
-
-
-
-
                 }
-
-                
             }
         }
 
@@ -115,7 +108,7 @@ public class SortAlgorithms : MonoBehaviour
                 Highlight(values.GetChild(aux1), true);
                 Highlight(values.GetChild(aux2), true);
 
-                yield return new WaitForSeconds(executionTime / 2f); // after highlight
+                yield return new WaitForSeconds(ExecutionTime / 2f); // after highlight
 
                 if (sortThis[j] < sortThis[smallest])
                 {
@@ -124,11 +117,8 @@ public class SortAlgorithms : MonoBehaviour
 
                 }
 
-                
-
                 Highlight(values.GetChild(aux1), false);
                 Highlight(values.GetChild(aux2), false);
-
             }
 
             temp = sortThis[smallest];
@@ -143,7 +133,7 @@ public class SortAlgorithms : MonoBehaviour
             UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
             UpdateTables(values.GetChild(smallest), numbers.GetChild(smallest), sortThis[smallest]);
 
-            yield return new WaitForSeconds(executionTime / 4f); // after update
+            yield return new WaitForSeconds(ExecutionTime / 4f); // after update
 
 
         }
@@ -159,7 +149,6 @@ public class SortAlgorithms : MonoBehaviour
 
         Transform values = vectorValues.tables[2].transform.Find("Values").transform;
         Transform numbers = vectorValues.tables[2].transform.Find("Numbers").transform;
-
 
         int n = sortThis.Length;
         int gap = n / 2;
@@ -179,7 +168,7 @@ public class SortAlgorithms : MonoBehaviour
                     Highlight(values.GetChild(j), true);
                     Highlight(values.GetChild(j - gap), true);
 
-                    yield return new WaitForSeconds(executionTime); // after highlight
+                    yield return new WaitForSeconds(ExecutionTime); // after highlight
 
                     sortThis[j] = sortThis[j - gap];
 
@@ -202,7 +191,7 @@ public class SortAlgorithms : MonoBehaviour
                 UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
 
 
-                yield return new WaitForSeconds(executionTime / 2f); // after update
+                yield return new WaitForSeconds(ExecutionTime / 2f); // after update
 
                 Highlight(values.GetChild(aux), false);
                 Highlight(values.GetChild(j), false);
@@ -214,6 +203,7 @@ public class SortAlgorithms : MonoBehaviour
 
     }
 
+    private int returnedQuickSortPivot;
     private IEnumerator QuickSort()
     {
         int trocas = 0;
@@ -266,7 +256,7 @@ public class SortAlgorithms : MonoBehaviour
                     {
                         Highlight(values.GetChild(lowIndex), true);
                         Highlight(values.GetChild(j), true);
-                        yield return new WaitForSeconds(executionTime); // after highlight
+                        yield return new WaitForSeconds(ExecutionTime); // after highlight
                     }
 
                     int temp = array[lowIndex];
@@ -278,7 +268,7 @@ public class SortAlgorithms : MonoBehaviour
                         UpdateTables(values.GetChild(j), numbers.GetChild(j), sortThis[j]);
                         UpdateTables(values.GetChild(lowIndex), numbers.GetChild(lowIndex), sortThis[lowIndex]);
 
-                        yield return new WaitForSeconds(executionTime / 2f); // after update
+                        yield return new WaitForSeconds(ExecutionTime / 2f); // after update
 
                         Highlight(values.GetChild(lowIndex), false);
                         Highlight(values.GetChild(j), false);
@@ -293,7 +283,7 @@ public class SortAlgorithms : MonoBehaviour
             Highlight(values.GetChild(lowIndex + 1), true);
             Highlight(values.GetChild(high), true);
 
-            yield return new WaitForSeconds(executionTime); // after highlight
+            yield return new WaitForSeconds(ExecutionTime); // after highlight
 
 
 
@@ -307,7 +297,7 @@ public class SortAlgorithms : MonoBehaviour
             UpdateTables(values.GetChild(lowIndex+1), numbers.GetChild(lowIndex + 1), sortThis[lowIndex + 1]);
             UpdateTables(values.GetChild(high), numbers.GetChild(high), sortThis[high]);
 
-            yield return new WaitForSeconds(executionTime / 2f); // after update
+            yield return new WaitForSeconds(ExecutionTime / 2f); // after update
 
             Highlight(values.GetChild(lowIndex + 1), false);
             Highlight(values.GetChild(high), false);
@@ -340,7 +330,7 @@ public class SortAlgorithms : MonoBehaviour
             Highlight(values.GetChild(0), true);
             Highlight(values.GetChild(i), true);
 
-            yield return new WaitForSeconds(executionTime); // after highlight
+            yield return new WaitForSeconds(ExecutionTime); // after highlight
 
             int temp = sortThis[0];
             sortThis[0] = sortThis[i];
@@ -352,7 +342,7 @@ public class SortAlgorithms : MonoBehaviour
             UpdateTables(values.GetChild(0), numbers.GetChild(0), sortThis[0]);
             UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
 
-            yield return new WaitForSeconds(executionTime / 2f); // after update
+            yield return new WaitForSeconds(ExecutionTime / 2f); // after update
 
             Highlight(values.GetChild(0), false);
             Highlight(values.GetChild(i), false);
@@ -378,7 +368,7 @@ public class SortAlgorithms : MonoBehaviour
                 Highlight(values.GetChild(i), true);
                 Highlight(values.GetChild(largest), true);
 
-                yield return new WaitForSeconds(executionTime); // after highlight
+                yield return new WaitForSeconds(ExecutionTime); // after highlight
 
                 int swap = arr[i];
                 arr[i] = arr[largest];
@@ -390,7 +380,7 @@ public class SortAlgorithms : MonoBehaviour
                 UpdateTables(values.GetChild(i), numbers.GetChild(i), sortThis[i]);
                 UpdateTables(values.GetChild(largest), numbers.GetChild(largest), sortThis[largest]);
 
-                yield return new WaitForSeconds(executionTime / 2f); // after update
+                yield return new WaitForSeconds(ExecutionTime / 2f); // after update
 
                 Highlight(values.GetChild(i), false);
                 Highlight(values.GetChild(largest), false);
@@ -477,7 +467,7 @@ public class SortAlgorithms : MonoBehaviour
                         arr[index] = arr[index - 1];
 
                         
-                        yield return new WaitForSeconds(executionTime/2);
+                        yield return new WaitForSeconds(ExecutionTime/2);
                         UpdateTables(values.GetChild(index), numbers.GetChild(index), arr[index]);
                         Highlight(values.GetChild(index), false);
                         Highlight(values.GetChild(index - 1), false);
@@ -491,7 +481,7 @@ public class SortAlgorithms : MonoBehaviour
 
                     Highlight(values.GetChild(start), true);
                     UpdateTables(values.GetChild(start), numbers.GetChild(start), arr[start]);
-                    yield return new WaitForSeconds(executionTime/2);
+                    yield return new WaitForSeconds(ExecutionTime/2);
                     Highlight(values.GetChild(start), false);
 
                     trocas++;
@@ -509,8 +499,6 @@ public class SortAlgorithms : MonoBehaviour
     }
 
 
-    #region Private Methods
-
     private void EndSort(TextMeshProUGUI sort)
     {
         vectorValues.ranking.Add(sort);
@@ -524,7 +512,6 @@ public class SortAlgorithms : MonoBehaviour
     {
         statusText.gameObject.SetActive(false);
         resetButton.gameObject.SetActive(true);
-
     }
     private void UpdateTables(Transform value, Transform number, int i)
     {
@@ -537,15 +524,4 @@ public class SortAlgorithms : MonoBehaviour
         if (value != null)
             value.Find("Highlight").gameObject.SetActive(onOff);
     }
-
-    private void SetCoroutineDelayTime(int arraySize)
-    {
-        executionTime = ((8.85f - 0.25f * arraySize) / 27f);
-
-    }
-
-    #endregion
-
-
-
 }
