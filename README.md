@@ -4,7 +4,7 @@ Made in Unity C# using coroutines and sliders.
 
 Demonstration
 ----
-[(Youtube link)](https://www.youtube.com/watch?v=LUJXNEJPi1A&feature=youtu.be)
+[(Itch.IO)](https://rafaelkuhn.itch.io/sorting)
 
 License
 ----
@@ -17,7 +17,7 @@ Feito em Unity C# utilizando corrotinas e sliders.
 
 Demonstração
 ----
-[(Link para youtube)](https://www.youtube.com/watch?v=LUJXNEJPi1A&feature=youtu.be)
+[(Itch.IO)](https://rafaelkuhn.itch.io/sorting)
 
 Licença
 ----
